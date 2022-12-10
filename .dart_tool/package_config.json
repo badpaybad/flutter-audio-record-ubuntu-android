@@ -434,6 +434,12 @@
       "languageVersion": "2.14"
     },
     {
+      "name": "wav",
+      "rootUri": "file:///home/dunp/.pub-cache/hosted/pub.dartlang.org/wav-1.2.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.14"
+    },
+    {
       "name": "win32",
       "rootUri": "file:///home/dunp/.pub-cache/hosted/pub.dartlang.org/win32-3.1.2",
       "packageUri": "lib/",
@@ -452,7 +458,7 @@
       "languageVersion": "2.18"
     }
   ],
-  "generated": "2022-12-10T11:18:34.402158Z",
+  "generated": "2022-12-10T11:47:20.127192Z",
   "generator": "pub",
   "generatorVersion": "2.19.0-146.2.beta"
 }

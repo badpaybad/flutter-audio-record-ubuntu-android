@@ -25,6 +25,8 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:path_provider/path_provider.dart';
 
+import 'package:wav/wav.dart';
+
 
 void main() async {
   runApp(MyApp());
@@ -106,6 +108,8 @@ class MicrecorderUiState extends State<MicrecorderUi> {
 
   var listToRecorded = <double>[];
 
+  var sampleRate=44100;
+
   @override
   void initSate() {
     super.initState();
@@ -137,7 +141,7 @@ class MicrecorderUiState extends State<MicrecorderUi> {
               listToRecorded = <double>[];
 
               await _micCapturer!.start(listener, onError,
-                  sampleRate: 16000, bufferSize: 3000);
+                  sampleRate: sampleRate, bufferSize: 3000);
 
               setState(() {
                 audiorCapturer_state = 1;
@@ -188,7 +192,7 @@ class MicrecorderUiState extends State<MicrecorderUi> {
 
     await Directory(_tempRecordedFromMicDir).create(recursive: true);
 
-    await save(filepath,listToRecorded.map((i) => i.toInt()).toList(),16000);
+    await save(filepath,listToRecorded.map((i) => i.toInt()).toList(),sampleRate);
 
     print(filepath);
     showToast("Save to file : $filepath");
@@ -200,6 +204,22 @@ class MicrecorderUiState extends State<MicrecorderUi> {
 
 
   Future<void> save(filepath, List<int> data, int sampleRate) async {
+
+    final wav = await Wav.readFile(filepath);
+
+    print(wav.format);
+    print(wav.samplesPerSecond);
+
+    // Mess with its audio data.
+    for (final chan in wav.channels) {
+      for (int i = 0; i < chan.length; ++i) {
+        chan[i] /= 2;  // Decrease the volume.
+      }
+    }
+
+    // Write to another WAV file.
+    await wav.writeFile(filepath);
+
     //File recordedFile = File("/storage/emulated/0/recordedFile.wav");
     File recordedFile = File(filepath);
     var channels = 1;

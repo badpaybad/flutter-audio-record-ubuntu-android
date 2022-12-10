@@ -45,6 +45,7 @@ dependencies:
   baseflow_plugin_template:
   oktoast:
   path_provider:
+  wav:
   #audio_recorder:
 
 dev_dependencies:
