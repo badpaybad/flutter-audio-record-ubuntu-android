@@ -52,20 +52,17 @@ class MyApp extends StatelessWidget {
     var step2 = cat_gia_vi(); // neu de await tung` line 1 thi
     var step3 = cat_rau(); // se ko phai la dong thoi
     var step4 = bo_my();
-
     // var listWaitAll=[step1,step2,step3,step4];
     // for(var t in listWaitAll){
     //   await t;
     // }
     //sau khi start concurrent het cac job
     // //-> done all task can thi moi dc tron_deu de an
-    await Future.wait([step1, step2, step3, step4]);
-
+    await Future.wait([step1, step2, step3, step4]);//similar and better to for ... listWaitAll { await t above
     var step5 = await tron_deu();
     var dtstop = DateTime.now();
     print(dtstop);
     print("done");
-
     print(dtstop.millisecondsSinceEpoch - dtsart.millisecondsSinceEpoch);
   }
 
