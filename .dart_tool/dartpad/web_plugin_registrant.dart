@@ -7,6 +7,7 @@
 // ignore_for_file: type=lint
 
 import 'package:audio_session/audio_session_web.dart';
+import 'package:flutter_sound_record_web/flutter_sound_record_web.dart';
 import 'package:just_audio_web/just_audio_web.dart';
 import 'package:microphone_web/microphone_web.dart';
 import 'package:url_launcher_web/url_launcher_web.dart';
@@ -15,6 +16,7 @@ import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 void registerPlugins([final Registrar? pluginRegistrar]) {
   final Registrar registrar = pluginRegistrar ?? webPluginRegistrar;
   AudioSessionWeb.registerWith(registrar);
+  FlutterSoundRecordPluginWeb.registerWith(registrar);
   JustAudioPlugin.registerWith(registrar);
   MicrophoneWeb.registerWith(registrar);
   UrlLauncherPlugin.registerWith(registrar);

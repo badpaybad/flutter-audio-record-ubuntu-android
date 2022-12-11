@@ -116,6 +116,24 @@
       "languageVersion": "2.17"
     },
     {
+      "name": "flutter_sound_record",
+      "rootUri": "file:///home/dunp/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_sound_record-3.2.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "flutter_sound_record_platform_interface",
+      "rootUri": "file:///home/dunp/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_sound_record_platform_interface-0.2.3",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "flutter_sound_record_web",
+      "rootUri": "file:///home/dunp/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_sound_record_web-0.2.4",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "flutter_test",
       "rootUri": "file:///home/dunp/snap/flutter/common/flutter/packages/flutter_test",
       "packageUri": "lib/",
@@ -434,12 +452,6 @@
       "languageVersion": "2.14"
     },
     {
-      "name": "wav",
-      "rootUri": "file:///home/dunp/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/wav-1.2.0",
-      "packageUri": "lib/",
-      "languageVersion": "2.14"
-    },
-    {
       "name": "win32",
       "rootUri": "file:///home/dunp/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/win32-3.1.2",
       "packageUri": "lib/",
@@ -458,7 +470,7 @@
       "languageVersion": "2.18"
     }
   ],
-  "generated": "2022-12-11T02:11:07.508671Z",
+  "generated": "2022-12-11T09:39:00.987505Z",
   "generator": "pub",
   "generatorVersion": "2.18.5"
 }

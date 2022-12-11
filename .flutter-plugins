@@ -2,6 +2,8 @@
 audio_session=/home/dunp/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/audio_session-0.1.13/
 ffmpeg_kit_flutter=/home/dunp/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/ffmpeg_kit_flutter-4.5.1/
 flutter_audio_capture=/home/dunp/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_audio_capture-1.1.2/
+flutter_sound_record=/home/dunp/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_sound_record-3.2.1/
+flutter_sound_record_web=/home/dunp/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_sound_record_web-0.2.4/
 just_audio=/home/dunp/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/just_audio-0.9.30/
 just_audio_mpv=/home/dunp/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/just_audio_mpv-0.1.6/
 just_audio_web=/home/dunp/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/just_audio_web-0.4.7/

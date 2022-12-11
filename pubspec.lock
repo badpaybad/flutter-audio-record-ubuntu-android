@@ -132,6 +132,27 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.1"
+  flutter_sound_record:
+    dependency: "direct main"
+    description:
+      name: flutter_sound_record
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.2.1"
+  flutter_sound_record_platform_interface:
+    dependency: transitive
+    description:
+      name: flutter_sound_record_platform_interface
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.2.3"
+  flutter_sound_record_web:
+    dependency: transitive
+    description:
+      name: flutter_sound_record_web
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.2.4"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -497,13 +518,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.2"
-  wav:
-    dependency: "direct main"
-    description:
-      name: wav
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.2.0"
   win32:
     dependency: transitive
     description:

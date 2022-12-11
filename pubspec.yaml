@@ -45,7 +45,7 @@ dependencies:
   baseflow_plugin_template:
   oktoast:
   path_provider:
-
+  flutter_sound_record:
   #audio_recorder:
 
 dev_dependencies:

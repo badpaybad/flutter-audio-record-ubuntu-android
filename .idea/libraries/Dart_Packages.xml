@@ -135,6 +135,27 @@
             </list>
           </value>
         </entry>
+        <entry key="flutter_sound_record">
+          <value>
+            <list>
+              <option value="$USER_HOME$/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_sound_record-3.2.1/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="flutter_sound_record_platform_interface">
+          <value>
+            <list>
+              <option value="$USER_HOME$/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_sound_record_platform_interface-0.2.3/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="flutter_sound_record_web">
+          <value>
+            <list>
+              <option value="$USER_HOME$/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_sound_record_web-0.2.4/lib" />
+            </list>
+          </value>
+        </entry>
         <entry key="flutter_test">
           <value>
             <list>
@@ -506,13 +527,6 @@
             </list>
           </value>
         </entry>
-        <entry key="wav">
-          <value>
-            <list>
-              <option value="$USER_HOME$/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/wav-1.2.0/lib" />
-            </list>
-          </value>
-        </entry>
         <entry key="win32">
           <value>
             <list>
@@ -548,6 +562,9 @@
       <root url="file://$USER_HOME$/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_audio_capture-1.1.2/lib" />
       <root url="file://$USER_HOME$/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_audio_cutter-1.0.3+1/lib" />
       <root url="file://$USER_HOME$/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_lints-2.0.1/lib" />
+      <root url="file://$USER_HOME$/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_sound_record-3.2.1/lib" />
+      <root url="file://$USER_HOME$/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_sound_record_platform_interface-0.2.3/lib" />
+      <root url="file://$USER_HOME$/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_sound_record_web-0.2.4/lib" />
       <root url="file://$USER_HOME$/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/http-0.13.5/lib" />
       <root url="file://$USER_HOME$/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/http_parser-4.0.2/lib" />
       <root url="file://$USER_HOME$/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/js-0.6.4/lib" />
@@ -598,7 +615,6 @@
       <root url="file://$USER_HOME$/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/url_launcher_windows-3.0.1/lib" />
       <root url="file://$USER_HOME$/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/uuid-3.0.7/lib" />
       <root url="file://$USER_HOME$/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/vector_math-2.1.2/lib" />
-      <root url="file://$USER_HOME$/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/wav-1.2.0/lib" />
       <root url="file://$USER_HOME$/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/win32-3.1.2/lib" />
       <root url="file://$USER_HOME$/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/xdg_directories-0.2.0+2/lib" />
       <root url="file://$USER_HOME$/snap/flutter/common/flutter/bin/cache/pkg/sky_engine/lib" />

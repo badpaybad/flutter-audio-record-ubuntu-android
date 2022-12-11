@@ -3,6 +3,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
+
 //https://flutterawesome.com/flutter-audio-cutter-package-for-flutter/
 import 'package:flutter_audio_cutter/audio_cutter.dart';
 
@@ -15,72 +16,99 @@ import 'package:just_audio/just_audio.dart';
 
 import 'package:oktoast/oktoast.dart';
 
+import 'package:flutter_sound_record/flutter_sound_record.dart';
+
+import 'MessageBus.dart';
+
 class MicrecorderUi extends StatefulWidget {
-  MicrecorderUi() {}
+  MessageBus _messageBus;
+
+  MicrecorderUi(MessageBus msgBus, {super.key}) : _messageBus = msgBus {}
 
   @override
   State<MicrecorderUi> createState() {
-    return MicrecorderUiState();
+    return MicrecorderUiState(_messageBus);
   }
 }
 
 class MicrecorderUiState extends State<MicrecorderUi> {
-  var _workingDir = "";
-  var _tempRecordedFromMicDir = "";
+  int _counter = 0;
+  MessageBus _messageBus;
 
-  MicrecorderUiState() {}
-
-  FlutterAudioCapture? _micCapturer;
-
-  int? audiorCapturer_state = 0;
+  MicrecorderUiState(MessageBus msgBus) : _messageBus = msgBus {}
+  int audiorCapturer_state = 0;
 
   ElevatedButton? _btnMicCapStart;
 
   ElevatedButton? _btnMicCapStop;
 
-  var listToRecorded = <double>[];
-
-  var sampleRate=44100;
+  final FlutterSoundRecord _audioRecorder = FlutterSoundRecord();
 
   @override
   void initSate() {
     super.initState();
+    threadPublishState();
+  }
+
+  var isDisposed = false;
+
+  @override
+  void dispose() {
+    super.dispose();
+    isDisposed = true;
+  }
+
+  Future<void> threadPublishState() async {
+    while (!isDisposed) {
+      if (audiorCapturer_state == 1) {
+        var data = await _audioRecorder.getAmplitude();
+        _messageBus!
+            .Publish("CurrentAudio_State", {"type": "Amplitude", "data": data});
+      }
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    _micCapturer = new FlutterAudioCapture();
+    _btnMicCapStart = ElevatedButton(
+      onPressed: (audiorCapturer_state == 1)
+          ? null
+          : () async {
+              await _audioRecorder.start();
+              bool isRecording = await _audioRecorder.isRecording();
+
+              setState(() {
+                audiorCapturer_state = 1;
+              });
+
+              _messageBus!.Publish(MessageBus.Channel_CurrentAudio_State,
+                  {"type": "State", "data": audiorCapturer_state});
+
+              showToast("Start record from mic: ${audiorCapturer_state}");
+            },
+      child: Text('Record - Start'),
+    );
 
     _btnMicCapStop = ElevatedButton(
       onPressed: audiorCapturer_state != 1
           ? null
           : () async {
-        await _micCapturer!.stop();
+              final String? filepath = await _audioRecorder.stop();
 
-        setState(() => audiorCapturer_state = 2);
+              setState(() => audiorCapturer_state = 2);
 
-        await saveRecorded();
+              showToast(
+                  "Stop record from mic: $audiorCapturer_state $filepath");
 
-        showToast("Stop record from mic: ${audiorCapturer_state}");
-      },
+              _messageBus!.Publish(MessageBus.Channel_CurrentAudio_State,
+                  {"type": "State", "data": audiorCapturer_state});
+
+              _messageBus!.Publish(MessageBus.Channel_CurrentAudio_State,
+                  {"type": "File", "data": filepath});
+
+
+            },
       child: Text('Record - Stop'),
-    );
-
-    _btnMicCapStart = ElevatedButton(
-      onPressed: (audiorCapturer_state == 1)
-          ? null
-          : () async {
-        listToRecorded = <double>[];
-
-        await _micCapturer!.start(listener, onError,
-            sampleRate: sampleRate, bufferSize: 3000);
-
-        setState(() {
-          audiorCapturer_state = 1;
-        });
-        showToast("Start record from mic: ${audiorCapturer_state}");
-      },
-      child: Text('Record - Start'),
     );
 
     return Container(
@@ -90,53 +118,38 @@ class MicrecorderUiState extends State<MicrecorderUi> {
     );
   }
 
-  // Callback function if device capture new audio stream.
-  // argument is audio stream buffer captured through mictophone.
-  // Currentry, you can only get is as Float64List.
-  void listener(dynamic obj) {
-    if (audiorCapturer_state == 1) {
-      var buffer = Float64List.fromList(obj.cast<double>());
-      listToRecorded.addAll(buffer.toList());
-    }
-  }
+  Future<String> getFilePathToSave() async {
+    _counter = _counter + 1;
 
-// Callback function if flutter_audio_capture failure to register
-// audio capture stream subscription.
-  void onError(Object e) {
-    print(e);
-  }
-
-  Future<void> saveRecorded() async {
-    var _workingDir = "";
-    var _tempRecordedFromMicDir = "";
+    final now = DateTime.now();
+    var workingDir = "";
+    var tempRecordedFromMicDir = "";
     Directory? appDocDirectory = await getExternalStorageDirectory();
 
     if (appDocDirectory == null) {
       appDocDirectory = await getApplicationDocumentsDirectory();
     }
 
-    print(appDocDirectory);
-    _workingDir = appDocDirectory!.path;
+    workingDir = appDocDirectory!.path;
 
-    _tempRecordedFromMicDir = "$_workingDir/temprecorded";
+    print("workingDir");
+    print(workingDir);
 
-    var filepath = "$_tempRecordedFromMicDir/1.wav";
+    tempRecordedFromMicDir = "$workingDir/temprecorded";
 
-    await Directory(_tempRecordedFromMicDir).create(recursive: true);
+    await Directory(tempRecordedFromMicDir).create(recursive: true);
 
-    await save(filepath,listToRecorded.map((i) => i.toInt()).toList(),sampleRate);
+    var filename = now.toIso8601String().replaceAll(":", "_");
 
-    print(filepath);
-    showToast("Save to file : $filepath");
+    var filepath = "$tempRecordedFromMicDir/$_counter $filename";
 
-    final player = AudioPlayer();                   // Create a player
-    final duration = await player.setFilePath( filepath);                 // Schemes: (https: | file: | asset: )
-    await player.play();
+    return filepath;
   }
 
-
-  Future<void> save(filepath, List<int> data, int sampleRate) async {
-
+  Future<void> save_wav(filepath, List<int> data, int sampleRate) async {
+    print(
+        "Future<void> save(filepath, List<int> data, int sampleRate) async {");
+    print(data);
     //File recordedFile = File("/storage/emulated/0/recordedFile.wav");
     File recordedFile = File(filepath);
     var channels = 1;
@@ -188,5 +201,4 @@ class MicrecorderUiState extends State<MicrecorderUi> {
     ]);
     return recordedFile.writeAsBytesSync(header, flush: true);
   }
-
 }

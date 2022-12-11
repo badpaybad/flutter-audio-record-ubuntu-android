@@ -1,30 +1,28 @@
 import 'dart:io';
 import 'dart:typed_data';
-
+import 'package:audio_cutter/MessageBus.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
-
-
 // https://pub.dev/packages/microphone
 import 'package:microphone/microphone.dart';
-
-
 //https://stackoverflow.com/questions/70241682/flutter-audio-trim
-
 //import 'package:ffmpeg_kit_flutter/ffmpeg_kit.dart';
-
 //import 'package:baseflow_plugin_template/baseflow_plugin_template.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:oktoast/oktoast.dart';
-
 import 'MicrecorderUi.dart';
+import 'AudioSegmentManagementUi.dart';
+import "MessageBus.dart";
 
 void main() async {
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  MyApp({super.key});
+  MessageBus  _messageBus;
+  MyApp( {super.key}):_messageBus=MessageBus(){
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,14 +58,10 @@ class MyApp extends StatelessWidget {
                     child: Text('Choose file ..'),
                   ),
                   Text(' Mic: '),
-                  MicrecorderUi(),
+                  MicrecorderUi(_messageBus),
                 ],
               ),
-              Text(
-                "Your file",
-                textDirection: TextDirection.ltr,
-                style: TextStyle(color: Colors.red, fontSize: 32),
-              ),
+              AudioSegmentManagementUi(_messageBus!),
             ],
           )),
         ));
