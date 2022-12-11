@@ -1,3 +1,4 @@
+
 import 'dart:io';
 import 'dart:typed_data';
 
@@ -44,12 +45,6 @@ class MicrecorderUiState extends State<MicrecorderUi> {
 
   final FlutterSoundRecord _audioRecorder = FlutterSoundRecord();
 
-  @override
-  void initSate() {
-    super.initState();
-    threadPublishState();
-  }
-
   var isDisposed = false;
 
   @override
@@ -58,13 +53,25 @@ class MicrecorderUiState extends State<MicrecorderUi> {
     isDisposed = true;
   }
 
+  @override
+  void initState() {
+    super.initState();
+
+     print("threadPublishState: starting ---------------------");
+     //threadPublishState();
+     print("threadPublishState: started ----------------------");
+  }
+
+
   Future<void> threadPublishState() async {
     while (!isDisposed) {
       if (audiorCapturer_state == 1) {
         var data = await _audioRecorder.getAmplitude();
         _messageBus!
-            .Publish("CurrentAudio_State", {"type": "Amplitude", "data": data});
+            .Publish(MessageBus.Channel_CurrentAudio_State, {"type": "Amplitude", "data": data});
       }
+      await Future.delayed(Duration(seconds: 1));
+      //sleep(Duration(seconds:1));
     }
   }
 
