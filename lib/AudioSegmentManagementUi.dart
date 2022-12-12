@@ -168,7 +168,11 @@ class AudioSegmentManagementUiState extends State<AudioSegmentManagementUi> {
                                               print("ButtonPlayUi no ink");
                                             },
                                             fromSec: 0.0,
-                                            toSec: 0.0),
+                                            toSec: 0.0,
+
+                                        )
+                                        ,
+
                                         Text(" "),
                                         Flexible(
                                           child: TextFormField(
@@ -219,6 +223,11 @@ class AudioSegmentManagementUiState extends State<AudioSegmentManagementUi> {
           child: Column(
             children: [
               ButtonAnimateIconUi(
+                inkDecoration: BoxDecoration(
+                border: Border.all(color: Colors.indigo, width: 2.0, ),
+                shape: BoxShape.circle,
+                  color: Colors.orange
+              ),
                 iconFrom: Icons.add_box,
                 iconTo: Icons.add,
                 iconSize: 24.0,
@@ -235,6 +244,11 @@ class AudioSegmentManagementUiState extends State<AudioSegmentManagementUi> {
                 },
               ),
               ButtonAnimateIconUi(
+                inkDecoration: BoxDecoration(
+                  border: Border.all(color: Colors.indigo, width: 2.0),
+                  shape: BoxShape.circle,
+                    color: Colors.orange
+                ),
                 iconFrom: Icons.add_to_home_screen,
                 iconTo: Icons.arrow_forward,
                 iconSize: 32.0,
