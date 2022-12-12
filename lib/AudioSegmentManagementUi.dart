@@ -191,8 +191,9 @@ class AudioSegmentManagementUiState extends State<AudioSegmentManagementUi> {
                                                 border: UnderlineInputBorder()),
                                           ),
                                         ),
-                                        IconButton(
-                                          icon: Icon(Icons.disabled_by_default),
+                                        ButtonAnimateIconUi(
+                                          iconFrom: Icons.disabled_by_default,
+                                          iconTo: Icons.disabled_by_default_outlined,
                                           iconSize: 24.0,
                                           onPressed: () async {
                                             listAudioSegment
@@ -219,6 +220,7 @@ class AudioSegmentManagementUiState extends State<AudioSegmentManagementUi> {
             children: [
               ButtonAnimateIconUi(
                 iconFrom: Icons.add_box,
+                iconTo: Icons.add,
                 iconSize: 24.0,
                 onPressed: () async {
                   listAudioSegment.add(AudioSegmentItem(
@@ -232,8 +234,9 @@ class AudioSegmentManagementUiState extends State<AudioSegmentManagementUi> {
                   );
                 },
               ),
-              IconButton(
-                icon: Icon(Icons.add_to_home_screen),
+              ButtonAnimateIconUi(
+                iconFrom: Icons.add_to_home_screen,
+                iconTo: Icons.arrow_forward,
                 iconSize: 32.0,
                 onPressed: () async {
                   _messageBus.Publish(MessageBus.Channel_CurrentAudio_State,
