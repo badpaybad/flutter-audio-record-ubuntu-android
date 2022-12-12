@@ -1,4 +1,3 @@
-
 import 'dart:io';
 import 'dart:typed_data';
 
@@ -20,6 +19,7 @@ import 'package:oktoast/oktoast.dart';
 import 'package:flutter_sound_record/flutter_sound_record.dart';
 
 import 'MessageBus.dart';
+import 'Shared.dart';
 
 class MicrecorderUi extends StatefulWidget {
   MessageBus _messageBus;
@@ -39,10 +39,6 @@ class MicrecorderUiState extends State<MicrecorderUi> {
   MicrecorderUiState(MessageBus msgBus) : _messageBus = msgBus {}
   int audiorCapturer_state = 0;
 
-  ElevatedButton? _btnMicCapStart;
-
-  ElevatedButton? _btnMicCapStop;
-
   final FlutterSoundRecord _audioRecorder = FlutterSoundRecord();
 
   var isDisposed = false;
@@ -57,18 +53,17 @@ class MicrecorderUiState extends State<MicrecorderUi> {
   void initState() {
     super.initState();
 
-     print("threadPublishState: starting ---------------------");
-     threadPublishState();
-     print("threadPublishState: started ----------------------");
+    print("threadPublishState: starting ---------------------");
+    threadPublishState();
+    print("threadPublishState: started ----------------------");
   }
-
 
   Future<void> threadPublishState() async {
     while (!isDisposed) {
       if (audiorCapturer_state == 1) {
         var data = await _audioRecorder.getAmplitude();
-        _messageBus
-            .Publish(MessageBus.Channel_CurrentAudio_State, {"type": "Amplitude", "data": data});
+        _messageBus.Publish(MessageBus.Channel_CurrentAudio_State,
+            {"type": "Amplitude", "data": data});
       }
       await Future.delayed(Duration(seconds: 1));
       //sleep(Duration(seconds:1));
@@ -77,32 +72,45 @@ class MicrecorderUiState extends State<MicrecorderUi> {
 
   @override
   Widget build(BuildContext context) {
-    _btnMicCapStart = ElevatedButton(
-      onPressed: (audiorCapturer_state == 1)
-          ? null
-          : () async {
-              await _audioRecorder.start();
-              bool isRecording = await _audioRecorder.isRecording();
+    print("MicrecorderUiState.build");
+    print("audiorCapturer_state $audiorCapturer_state");
+    print("StartRec: ${audiorCapturer_state != 1}");
+    print("StopRec: ${audiorCapturer_state == 1}");
+    return Container(
+      child: Row(
+        children: [
+          ButtonAnimateIconUi(
+              toolTipText: "Start record",
+              enable: audiorCapturer_state != 1,
+              onPressed: () async {
+                await _audioRecorder.start();
+                bool isRecording = await _audioRecorder.isRecording();
 
-              setState(() {
                 audiorCapturer_state = 1;
-              });
 
-              _messageBus!.Publish(MessageBus.Channel_CurrentAudio_State,
-                  {"type": "State", "data": audiorCapturer_state});
+                _messageBus!.Publish(MessageBus.Channel_CurrentAudio_State,
+                    {"type": "State", "data": audiorCapturer_state});
 
-              showToast("Start record from mic: ${audiorCapturer_state}");
-            },
-      child: Text('Record - Start'),
-    );
+                setState(() {});
 
-    _btnMicCapStop = ElevatedButton(
-      onPressed: audiorCapturer_state != 1
-          ? null
-          : () async {
+                showToast("Start record from mic: ${audiorCapturer_state}");
+              },
+              iconFrom: Icons.record_voice_over,
+              inkDecoration: BoxDecoration(
+                border: Border.all(color: Colors.orange, width: 2.0),
+                color: Colors.orangeAccent,
+                shape: BoxShape.rectangle,
+              ),
+              key: UniqueKey()),
+          const Text(" "),
+          ButtonAnimateIconUi(
+            key: UniqueKey(),
+            toolTipText: "Stop record",
+            enable: audiorCapturer_state == 1,
+            onPressed: () async {
               final String? filepath = await _audioRecorder.stop();
 
-              setState(() => audiorCapturer_state = 2);
+              audiorCapturer_state = 2;
 
               showToast(
                   "Stop record from mic: $audiorCapturer_state $filepath");
@@ -113,14 +121,16 @@ class MicrecorderUiState extends State<MicrecorderUi> {
               _messageBus.Publish(MessageBus.Channel_CurrentAudio_State,
                   {"type": "File", "data": filepath});
 
-
+              setState(() {});
             },
-      child: Text('Record - Stop'),
-    );
-
-    return Container(
-      child: Row(
-        children: [_btnMicCapStart!, _btnMicCapStop!],
+            iconFrom: Icons.record_voice_over_outlined,
+            inkDecoration: BoxDecoration(
+              border: Border.all(color: Colors.orange, width: 2.0),
+              color: Colors.orangeAccent,
+              shape: BoxShape.rectangle,
+            ),
+          )
+        ],
       ),
     );
   }

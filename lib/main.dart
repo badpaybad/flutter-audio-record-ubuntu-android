@@ -15,6 +15,7 @@ import 'package:oktoast/oktoast.dart';
 import 'MicrecorderUi.dart';
 import 'AudioSegmentManagementUi.dart';
 import "MessageBus.dart";
+import 'Shared.dart';
 
 void main() async {
   runApp(MyAppUi());
@@ -39,12 +40,12 @@ class MyAppUiState extends State<MyAppUi> {
 
       if (type == "File") {
         _canManipulateFile = true;
-        setState(() {});
+        //setState(() {});
       }
       if (type == "State") {}
       if (type == "Reset") {
         _canManipulateFile = false;
-        setState(() {});
+        //setState(() {});
       }
     });
   }
@@ -80,7 +81,7 @@ class MyAppUiState extends State<MyAppUi> {
               child: Column(
             children: [
               Container(
-                padding: EdgeInsets.fromLTRB(15, 5, 15, 13),
+                padding: EdgeInsets.fromLTRB(15, 5, 15, 5),
                 //margin: EdgeInsets.fromLTRB(0, 0, 0, 5),
                 child: Row(
                   children: [
@@ -89,16 +90,15 @@ class MyAppUiState extends State<MyAppUi> {
                     //   child: Text('From file ...'),
                     // ),
                     Text(' Mic: '),
-                    MicrecorderUi(_messageBus),
+                    MicrecorderUi(_messageBus, key: UniqueKey()),
                   ],
                 ),
               ),
               Expanded(
                   child: Container(
                 padding: const EdgeInsets.fromLTRB(0, 0, 0, 3),
-                child: AudioSegmentManagementUi(_messageBus),
-              )
-              ),
+                child: AudioSegmentManagementUi(_messageBus, key: UniqueKey()),
+              )),
             ],
           )),
         ));

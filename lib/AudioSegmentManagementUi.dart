@@ -21,6 +21,7 @@ import 'package:flutter_sound_record/flutter_sound_record.dart';
 import 'package:flutter_media_metadata/flutter_media_metadata.dart';
 
 import 'MessageBus.dart';
+import 'Shared.dart';
 
 class AudioSegmentManagementUi extends StatefulWidget {
   MessageBus _messageBus;
@@ -88,7 +89,7 @@ class AudioSegmentManagementUiState extends State<AudioSegmentManagementUi> {
     return _canManipulateFile
         ? _buildView()
         : ColorFiltered(
-            colorFilter: ColorFilter.mode(
+            colorFilter: const ColorFilter.mode(
                 Color.fromARGB(100, 200, 200, 200), BlendMode.saturation),
             child: _buildView());
   }
@@ -108,7 +109,7 @@ class AudioSegmentManagementUiState extends State<AudioSegmentManagementUi> {
       print(ex);
     }
 
-    await Future.delayed(Duration(milliseconds: 500));
+    await Future.delayed(const Duration(milliseconds: 500));
     _audioPlayingState = 0;
     setState(() {});
   }
@@ -125,7 +126,7 @@ class AudioSegmentManagementUiState extends State<AudioSegmentManagementUi> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     ButtonAnimateIconUi(
-                      onPressed: ()async{
+                      onPressed: () async {
                         print("ButtonAudioPlayUi with decoration ink");
                         var type = _data?["type"]?.toString();
                         if (type == "File") {
@@ -164,32 +165,29 @@ class AudioSegmentManagementUiState extends State<AudioSegmentManagementUi> {
                                     return Row(
                                       children: [
                                         ButtonAnimateIconUi(
-                                            onPressed: () async {
-                                              print("ButtonPlayUi no ink");
-                                            },
-                                            fromSec: 0.0,
-                                            toSec: 0.0,
-
-                                        )
-                                        ,
-
-                                        Text(" "),
+                                          onPressed: () async {
+                                            print("ButtonPlayUi no ink");
+                                          },
+                                          fromSec: 0.0,
+                                          toSec: 0.0,
+                                        ),
+                                        const Text(" "),
                                         Flexible(
                                           child: TextFormField(
                                             controller: TextEditingController(
                                                 text: data.FromSec.toString()),
-                                            decoration: InputDecoration(
+                                            decoration: const InputDecoration(
                                                 //hintText: "From sec",
                                                 labelText: "From sec",
                                                 border: UnderlineInputBorder()),
                                           ),
                                         ),
-                                        Text("    "),
+                                        const Text("    "),
                                         Flexible(
                                           child: TextFormField(
                                             controller: TextEditingController(
                                                 text: data.ToSec.toString()),
-                                            decoration: InputDecoration(
+                                            decoration: const InputDecoration(
                                                 //hintText: "To sec",
                                                 labelText: "To sec",
                                                 border: UnderlineInputBorder()),
@@ -197,7 +195,8 @@ class AudioSegmentManagementUiState extends State<AudioSegmentManagementUi> {
                                         ),
                                         ButtonAnimateIconUi(
                                           iconFrom: Icons.disabled_by_default,
-                                          iconTo: Icons.disabled_by_default_outlined,
+                                          iconTo: Icons
+                                              .disabled_by_default_outlined,
                                           iconSize: 24.0,
                                           onPressed: () async {
                                             listAudioSegment
@@ -205,7 +204,7 @@ class AudioSegmentManagementUiState extends State<AudioSegmentManagementUi> {
                                             setState(() {});
                                           },
                                         ),
-                                        Text("    "),
+                                        const Text("    "),
                                       ],
                                     );
                                   }),
@@ -224,10 +223,12 @@ class AudioSegmentManagementUiState extends State<AudioSegmentManagementUi> {
             children: [
               ButtonAnimateIconUi(
                 inkDecoration: BoxDecoration(
-                border: Border.all(color: Colors.indigo, width: 2.0, ),
-                shape: BoxShape.circle,
-                  color: Colors.orange
-              ),
+                    border: Border.all(
+                      color: Colors.indigo,
+                      width: 2.0,
+                    ),
+                    shape: BoxShape.circle,
+                    color: Colors.orange),
                 iconFrom: Icons.add_box,
                 iconTo: Icons.add,
                 iconSize: 24.0,
@@ -238,17 +239,17 @@ class AudioSegmentManagementUiState extends State<AudioSegmentManagementUi> {
                   setState(() {});
                   _listViewController.animateTo(
                     _listViewController.position.maxScrollExtent + 1000,
-                    duration: Duration(seconds: 2),
+                    duration: const Duration(seconds: 2),
                     curve: Curves.ease,
                   );
                 },
               ),
               ButtonAnimateIconUi(
+                toolTipText: "Export all",
                 inkDecoration: BoxDecoration(
-                  border: Border.all(color: Colors.indigo, width: 2.0),
-                  shape: BoxShape.circle,
-                    color: Colors.orange
-                ),
+                    border: Border.all(color: Colors.indigo, width: 2.0),
+                    shape: BoxShape.circle,
+                    color: Colors.orange),
                 iconFrom: Icons.add_to_home_screen,
                 iconTo: Icons.arrow_forward,
                 iconSize: 32.0,
@@ -265,118 +266,4 @@ class AudioSegmentManagementUiState extends State<AudioSegmentManagementUi> {
       ],
     );
   }
-}
-
-class ButtonAnimateIconUi extends StatefulWidget {
-  VoidCallback onPressed;
-  double? fromSec;
-  double? toSec;
-  double ? _iconSize;
-  BoxDecoration ? _inkDecoration;
-  IconData ? _iconFrom;
-  IconData ? _iconTo;
-  ButtonAnimateIconUi({onPressed, double? fromSec, double? toSec,double? iconSize,
-    IconData ? iconFrom,
-    IconData ? iconTo,
-    BoxDecoration ? inkDecoration,
-    super.key})
-      : this.onPressed = onPressed,
-        this.fromSec = fromSec,
-        this.toSec = toSec {
-    _inkDecoration=inkDecoration;
-    _iconSize=iconSize;
-    if (iconFrom!=null && iconTo==null){
-      iconTo=iconFrom;
-    }
-    if (iconFrom==null && iconTo!=null){
-      iconFrom=iconTo;
-    }
-    _iconFrom=iconFrom ?? Icons.play_arrow;
-    _iconTo=iconTo?? Icons.pause;
-  }
-
-  @override
-  State<StatefulWidget> createState() {
-    return ButtonAnimateIconUiState(onPressed, fromSec, toSec, _iconSize,_iconFrom,_iconTo, _inkDecoration);
-  }
-}
-
-class ButtonAnimateIconUiState extends State<ButtonAnimateIconUi> {
-  VoidCallback _onPressed;
-  double? _from;
-  double? _to;
-  BoxDecoration ? _inkDecoration;
-  double ? _iconSize=32.0;
-  IconData ? _iconFrom= Icons.play_arrow;
-  IconData ? _iconTo= Icons.pause;
-  ButtonAnimateIconUiState(VoidCallback onPressed, double? from, double? to,
-      double ? iconSize,
-      IconData ? iconFrom,
-      IconData ?  iconTo,
-      BoxDecoration ? inkDecoration)
-      : _onPressed = onPressed {
-    _from = from;
-    _to = to;
-    _inkDecoration=inkDecoration;
-    _iconSize=iconSize;
-    _iconFrom=iconFrom;
-    _iconTo=iconTo;
-  }
-
-  var _playState = 0;
-  @override
-  Widget build(BuildContext context) {
-    var btn= IconButton(
-      icon: Icon( _playState == 1 ? _iconTo : _iconFrom),
-      iconSize: _iconSize,
-      onPressed: () async {
-        _playState = 1;
-        setState(() {});
-        try {
-          _onPressed!.call();
-        }catch(ex){
-          print("ButtonPlayUiState:Error:");
-          print(ex);
-        }
-        await Future.delayed(Duration(milliseconds: 500));
-        _playState = 0;
-        setState(() {});
-      },
-    );
-    if (_inkDecoration==null){
-      return btn;
-    }else{
-      return Ink(
-        decoration: _inkDecoration,
-        child: btn,
-      );
-    }
-  }
-}
-
-class AudioSegmentItem {
-  AudioSegmentItem({double from = 0, double to = 0, String filepath = ""}) {
-    PathFile = filepath;
-    FromSec = from;
-    ToSec = to;
-  }
-
-  static AudioSegmentItem fromJson(Map<String, dynamic> val) {
-    return AudioSegmentItem(
-        from: val["FromSec"],
-        to: val["ToSec"],
-        filepath: val["PathFile"].toString());
-  }
-
-  static Map<String, dynamic> toJson(AudioSegmentItem val) {
-    return {
-      "PathFile": val.PathFile,
-      "FromSec": val.FromSec,
-      "ToSec": val.ToSec
-    };
-  }
-
-  String PathFile = "";
-  double FromSec = 0.0;
-  double ToSec = 0.0;
 }
