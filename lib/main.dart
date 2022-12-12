@@ -17,53 +17,36 @@ import 'AudioSegmentManagementUi.dart';
 import "MessageBus.dart";
 
 void main() async {
-  runApp(MyApp());
+  runApp(MyAppUi());
 }
 
-class MyApp extends StatelessWidget {
+class MyAppUi extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return MyAppUiState();
+  }
+}
+
+class MyAppUiState extends State<MyAppUi> {
   MessageBus _messageBus;
 
-  MyApp({super.key}) : _messageBus = MessageBus() {}
+  bool _canManipulateFile = false;
 
-  Future<void> nau_nuoc() async {
-    await Future.delayed(Duration(seconds: 5));
-  }
+  MyAppUiState() : _messageBus = MessageBus() {
+    _messageBus!.Subscribe(MessageBus.Channel_CurrentAudio_State,
+        "MyAppUiState/AudioSegmentManagementUiState", (data) async {
+      var type = data["type"].toString();
 
-  Future<void> cat_gia_vi() async {
-    await Future.delayed(Duration(seconds: 1));
-  }
-
-  Future<void> cat_rau() async {
-    await Future.delayed(Duration(seconds: 1));
-  }
-
-  Future<void> bo_my() async {
-    await Future.delayed(Duration(seconds: 1));
-  }
-
-  Future<void> tron_deu() async {
-    await Future.delayed(Duration(seconds: 1));
-  }
-
-  Future<void> run() async {
-    var dtsart = DateTime.now();
-    print(dtsart);
-    var step1 = nau_nuoc(); //var step1= await nau_nuoc();
-    var step2 = cat_gia_vi(); // neu de await tung` line 1 thi
-    var step3 = cat_rau(); // se ko phai la dong thoi
-    var step4 = bo_my();
-    // var listWaitAll=[step1,step2,step3,step4];
-    // for(var t in listWaitAll){
-    //   await t;
-    // }
-    //sau khi start concurrent het cac job
-    // //-> done all task can thi moi dc tron_deu de an
-    await Future.wait([step1, step2, step3, step4]);//similar and better to for ... listWaitAll { await t above
-    var step5 = await tron_deu();
-    var dtstop = DateTime.now();
-    print(dtstop);
-    print("done");
-    print(dtstop.millisecondsSinceEpoch - dtsart.millisecondsSinceEpoch);
+      if (type == "File") {
+        _canManipulateFile = true;
+        setState(() {});
+      }
+      if (type == "State") {}
+      if (type == "Reset") {
+        _canManipulateFile = false;
+        setState(() {});
+      }
+    });
   }
 
   @override
@@ -85,29 +68,113 @@ class MyApp extends StatelessWidget {
           print(statuses[k]);
         }
       }).whenComplete(() async {
-        await run();
+        //await run();
       });
     }
 
     return MaterialApp(
         builder: (_, Widget? child) => OKToast(child: child!),
         home: Scaffold(
+          //resizeToAvoidBottomInset: false,
           body: SafeArea(
               child: Column(
             children: [
-              Row(
-                children: [
-                  ElevatedButton(
-                    onPressed: () async {},
-                    child: Text('Choose file ..'),
-                  ),
-                  Text(' Mic: '),
-                  MicrecorderUi(_messageBus),
-                ],
+              Container(
+                padding: EdgeInsets.fromLTRB(15, 5, 15, 13),
+                //margin: EdgeInsets.fromLTRB(0, 0, 0, 5),
+                child: Row(
+                  children: [
+                    // ElevatedButton(
+                    //   onPressed: () async {},
+                    //   child: Text('From file ...'),
+                    // ),
+                    Text(' Mic: '),
+                    MicrecorderUi(_messageBus),
+                  ],
+                ),
               ),
-              AudioSegmentManagementUi(_messageBus!),
+              Expanded(
+                  child: Container(
+                padding: const EdgeInsets.fromLTRB(0, 0, 0, 3),
+                child: AudioSegmentManagementUi(_messageBus),
+              )
+              ),
             ],
           )),
         ));
+  }
+}
+
+class TestAsyncAwait {
+  Future<bool> nau_nuoc() async {
+    try {
+      await Future.delayed(Duration(seconds: 5));
+      return true;
+    } catch (ex) {
+      return false;
+    }
+  }
+
+  Future<bool> cat_gia_vi() async {
+    try {
+      await Future.delayed(Duration(seconds: 1));
+      return true;
+    } catch (ex) {
+      return false;
+    }
+  }
+
+  Future<bool> cat_rau() async {
+    try {
+      await Future.delayed(Duration(seconds: 1));
+      return true;
+    } catch (ex) {
+      return false;
+    }
+  }
+
+  Future<bool> bo_my() async {
+    try {
+      await Future.delayed(Duration(seconds: 1));
+      return true;
+    } catch (ex) {
+      return false;
+    }
+  }
+
+  Future<bool> tron_deu() async {
+    try {
+      await Future.delayed(Duration(seconds: 1));
+      return true;
+    } catch (ex) {
+      return false;
+    }
+  }
+
+  Future<void> run() async {
+    var dtsart = DateTime.now();
+    print(dtsart);
+    var step1 = nau_nuoc(); //var step1= await nau_nuoc();
+    var step2 = cat_gia_vi(); // neu de await tung` line 1 thi
+    var step3 = cat_rau(); // se ko phai la dong thoi
+    var step4 = bo_my();
+
+    // var listWaitAll=[step1,step2,step3,step4];
+    // for(var t in listWaitAll){
+    //   await t;
+    // }
+    //sau khi start concurrent het cac job
+    // //-> done all task can thi moi dc tron_deu de an
+    var res = await Future.wait([step1, step2, step3, step4]);
+
+    if (res.any((element) => element == false)) {
+      print("Error");
+    } else {
+      var step5 = await tron_deu();
+      print("done");
+    }
+    var dtstop = DateTime.now();
+    print(dtstop);
+    print(dtstop.millisecondsSinceEpoch - dtsart.millisecondsSinceEpoch);
   }
 }

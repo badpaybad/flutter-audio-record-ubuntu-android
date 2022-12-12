@@ -58,7 +58,7 @@ class MicrecorderUiState extends State<MicrecorderUi> {
     super.initState();
 
      print("threadPublishState: starting ---------------------");
-     //threadPublishState();
+     threadPublishState();
      print("threadPublishState: started ----------------------");
   }
 
@@ -67,7 +67,7 @@ class MicrecorderUiState extends State<MicrecorderUi> {
     while (!isDisposed) {
       if (audiorCapturer_state == 1) {
         var data = await _audioRecorder.getAmplitude();
-        _messageBus!
+        _messageBus
             .Publish(MessageBus.Channel_CurrentAudio_State, {"type": "Amplitude", "data": data});
       }
       await Future.delayed(Duration(seconds: 1));
@@ -107,10 +107,10 @@ class MicrecorderUiState extends State<MicrecorderUi> {
               showToast(
                   "Stop record from mic: $audiorCapturer_state $filepath");
 
-              _messageBus!.Publish(MessageBus.Channel_CurrentAudio_State,
+              _messageBus.Publish(MessageBus.Channel_CurrentAudio_State,
                   {"type": "State", "data": audiorCapturer_state});
 
-              _messageBus!.Publish(MessageBus.Channel_CurrentAudio_State,
+              _messageBus.Publish(MessageBus.Channel_CurrentAudio_State,
                   {"type": "File", "data": filepath});
 
 
@@ -137,7 +137,7 @@ class MicrecorderUiState extends State<MicrecorderUi> {
       appDocDirectory = await getApplicationDocumentsDirectory();
     }
 
-    workingDir = appDocDirectory!.path;
+    workingDir = appDocDirectory.path;
 
     print("workingDir");
     print(workingDir);

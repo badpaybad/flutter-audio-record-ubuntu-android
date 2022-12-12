@@ -47,6 +47,7 @@ dependencies:
   path_provider:
   flutter_sound_record:
   #audio_recorder:
+  flutter_media_metadata:
 
 dev_dependencies:
   flutter_test:
