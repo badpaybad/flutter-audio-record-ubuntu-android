@@ -4,6 +4,7 @@
 
 list(APPEND FLUTTER_PLUGIN_LIST
   flutter_audio_capture
+  flutter_media_metadata
   url_launcher_linux
 )
 

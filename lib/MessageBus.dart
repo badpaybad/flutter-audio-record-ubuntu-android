@@ -26,7 +26,6 @@ class MessageBus {
     }
     for (var h in _channel[channelName]!.values) {
       h(data);
-      print(data);
     }
   }
 }
