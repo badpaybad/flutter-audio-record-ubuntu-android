@@ -45,6 +45,18 @@
       <excludeFolder url="file://$MODULE_DIR$/linux/flutter/ephemeral/.plugin_symlinks/path_provider_linux/.dart_tool" />
       <excludeFolder url="file://$MODULE_DIR$/linux/flutter/ephemeral/.plugin_symlinks/path_provider_linux/build" />
       <excludeFolder url="file://$MODULE_DIR$/linux/flutter/ephemeral/.plugin_symlinks/path_provider_linux/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/linux/flutter/ephemeral/.plugin_symlinks/flutter_media_metadata/example/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/linux/flutter/ephemeral/.plugin_symlinks/flutter_media_metadata/example/build" />
+      <excludeFolder url="file://$MODULE_DIR$/linux/flutter/ephemeral/.plugin_symlinks/flutter_media_metadata/example/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/linux/flutter/ephemeral/.plugin_symlinks/flutter_media_metadata/build" />
+      <excludeFolder url="file://$MODULE_DIR$/linux/flutter/ephemeral/.plugin_symlinks/flutter_media_metadata/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/linux/flutter/ephemeral/.plugin_symlinks/flutter_media_metadata/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/windows/flutter/ephemeral/.plugin_symlinks/flutter_media_metadata/example/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/windows/flutter/ephemeral/.plugin_symlinks/flutter_media_metadata/example/build" />
+      <excludeFolder url="file://$MODULE_DIR$/windows/flutter/ephemeral/.plugin_symlinks/flutter_media_metadata/example/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/windows/flutter/ephemeral/.plugin_symlinks/flutter_media_metadata/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/windows/flutter/ephemeral/.plugin_symlinks/flutter_media_metadata/build" />
+      <excludeFolder url="file://$MODULE_DIR$/windows/flutter/ephemeral/.plugin_symlinks/flutter_media_metadata/.dart_tool" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

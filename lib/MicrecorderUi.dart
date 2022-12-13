@@ -1,23 +1,18 @@
 import 'dart:io';
 import 'dart:typed_data';
-
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 
 //https://flutterawesome.com/flutter-audio-cutter-package-for-flutter/
-import 'package:flutter_audio_cutter/audio_cutter.dart';
-
+//import 'package:flutter_audio_cutter/audio_cutter.dart';
 //https://pub.dev/packages/flutter_audio_capture
-import 'package:flutter_audio_capture/flutter_audio_capture.dart';
+//import 'package:flutter_audio_capture/flutter_audio_capture.dart';
 import 'package:path_provider/path_provider.dart';
 
 //https://pub.dev/packages/just_audio
-import 'package:just_audio/just_audio.dart';
-
+//import 'package:just_audio/just_audio.dart';
 import 'package:oktoast/oktoast.dart';
-
 import 'package:flutter_sound_record/flutter_sound_record.dart';
-
 import 'MessageBus.dart';
 import 'Shared.dart';
 
@@ -33,7 +28,7 @@ class MicrecorderUi extends StatefulWidget {
 }
 
 class MicrecorderUiState extends State<MicrecorderUi> {
-  int _counter = 0;
+  int _counterGeneratedFile = 0;
   MessageBus _messageBus;
 
   MicrecorderUiState(MessageBus msgBus) : _messageBus = msgBus {}
@@ -42,6 +37,8 @@ class MicrecorderUiState extends State<MicrecorderUi> {
   final FlutterSoundRecord _audioRecorder = FlutterSoundRecord();
 
   var isDisposed = false;
+  var _recordStarted = DateTime.now();
+  var _recordElapsed = 0;
 
   @override
   void dispose() {
@@ -53,47 +50,72 @@ class MicrecorderUiState extends State<MicrecorderUi> {
   void initState() {
     super.initState();
 
-    print("threadPublishState: starting ---------------------");
-    threadPublishState();
-    print("threadPublishState: started ----------------------");
+    threadLoopToPublishState();
   }
 
-  Future<void> threadPublishState() async {
+  dynamic _buildAudioMessage(dynamic data, String type) {
+    return {
+      "type": type,
+      "data": data,
+      "state": audiorCapturer_state,
+      "startAt": _recordStarted,
+      "duration": _recordElapsed
+    };
+  }
+
+  Future<void> threadLoopToPublishState() async {
     while (!isDisposed) {
-      if (audiorCapturer_state == 1) {
-        var data = await _audioRecorder.getAmplitude();
-        _messageBus.Publish(MessageBus.Channel_CurrentAudio_State,
-            {"type": "Amplitude", "data": data});
+      try {
+        if (audiorCapturer_state == 1) {
+          //var data = await _audioRecorder.getAmplitude();
+          _recordElapsed = _recordElapsed + 100;
+          _messageBus.Publish(MessageBus.Channel_CurrentAudio_State,
+              _buildAudioMessage(_recordElapsed, "Duration"));
+        }
+      } finally {
+        await Future.delayed(Duration(milliseconds: 100));
+        //sleep(Duration(seconds:1));
       }
-      await Future.delayed(Duration(seconds: 1));
-      //sleep(Duration(seconds:1));
     }
+  }
+
+  Future<void> _startRecordFromMic() async {
+    await _audioRecorder.start();
+    bool isRecording = await _audioRecorder.isRecording();
+
+    audiorCapturer_state = 1;
+    _recordStarted = DateTime.now();
+    _recordElapsed = 0;
+
+    _messageBus!.Publish(MessageBus.Channel_CurrentAudio_State,
+        _buildAudioMessage(audiorCapturer_state, "State"));
+
+    if (this.mounted == true) setState(() {});
+
+    showToast("Start record from mic: ${audiorCapturer_state}");
   }
 
   @override
   Widget build(BuildContext context) {
-    print("MicrecorderUiState.build");
-    print("audiorCapturer_state $audiorCapturer_state");
-    print("StartRec: ${audiorCapturer_state != 1}");
-    print("StopRec: ${audiorCapturer_state == 1}");
+    var alertOverwrite = _buildAlertRecordOverwrite();
     return Container(
       child: Row(
         children: [
+          Text(' Record voice from Mic: '),
           ButtonAnimateIconUi(
               toolTipText: "Start record",
               enable: audiorCapturer_state != 1,
               onPressed: () async {
-                await _audioRecorder.start();
-                bool isRecording = await _audioRecorder.isRecording();
-
-                audiorCapturer_state = 1;
-
-                _messageBus!.Publish(MessageBus.Channel_CurrentAudio_State,
-                    {"type": "State", "data": audiorCapturer_state});
-
-                setState(() {});
-
-                showToast("Start record from mic: ${audiorCapturer_state}");
+                if (audiorCapturer_state == 0) {
+                  _startRecordFromMic();
+                } else {
+                  showDialog(
+                      barrierDismissible: false,
+                      context: context,
+                      builder: (ctx) {
+                        return alertOverwrite;
+                      });
+                }
               },
               iconFrom: Icons.record_voice_over,
               inkDecoration: BoxDecoration(
@@ -109,19 +131,13 @@ class MicrecorderUiState extends State<MicrecorderUi> {
             enable: audiorCapturer_state == 1,
             onPressed: () async {
               final String? filepath = await _audioRecorder.stop();
-
               audiorCapturer_state = 2;
-
               showToast(
                   "Stop record from mic: $audiorCapturer_state $filepath");
-
               _messageBus.Publish(MessageBus.Channel_CurrentAudio_State,
-                  {"type": "State", "data": audiorCapturer_state});
+                  _buildAudioMessage(filepath, "File"));
 
-              _messageBus.Publish(MessageBus.Channel_CurrentAudio_State,
-                  {"type": "File", "data": filepath});
-
-              setState(() {});
+              if (this.mounted == true) setState(() {});
             },
             iconFrom: Icons.record_voice_over_outlined,
             inkDecoration: BoxDecoration(
@@ -129,14 +145,35 @@ class MicrecorderUiState extends State<MicrecorderUi> {
               color: Colors.orangeAccent,
               shape: BoxShape.rectangle,
             ),
-          )
+          ),
         ],
       ),
     );
   }
 
+  AlertDialog _buildAlertRecordOverwrite() {
+    return AlertDialog(
+      title: Text("Overwrite all after record"),
+      content: Text("All segment will clear, you have to do from begin"),
+      actions: [
+        TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: Text("Cancel")),
+        TextButton(
+            onPressed: () async {
+              _startRecordFromMic();
+
+              Navigator.pop(context);
+            },
+            child: Text("Ok - overwrite")),
+      ],
+    );
+  }
+
   Future<String> getFilePathToSave() async {
-    _counter = _counter + 1;
+    _counterGeneratedFile = _counterGeneratedFile + 1;
 
     final now = DateTime.now();
     var workingDir = "";
@@ -158,7 +195,7 @@ class MicrecorderUiState extends State<MicrecorderUi> {
 
     var filename = now.toIso8601String().replaceAll(":", "_");
 
-    var filepath = "$tempRecordedFromMicDir/$_counter $filename";
+    var filepath = "$tempRecordedFromMicDir/$_counterGeneratedFile $filename";
 
     return filepath;
   }

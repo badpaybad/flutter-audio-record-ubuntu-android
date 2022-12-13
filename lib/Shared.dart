@@ -7,8 +7,8 @@ import 'package:flutter/material.dart';
 
 class ButtonAnimateIconUi extends StatefulWidget {
   VoidCallback? onPressed;
-  double? fromSec;
-  double? toSec;
+  int? fromMilisec;
+  int? toMilisec;
   double? _iconSize;
   BoxDecoration? _inkDecoration;
   IconData? _iconFrom;
@@ -18,8 +18,8 @@ class ButtonAnimateIconUi extends StatefulWidget {
 
   ButtonAnimateIconUi(
       {VoidCallback? onPressed,
-      double? fromSec,
-      double? toSec,
+      int? fromMilisec,
+      int? toMilisec,
       double? iconSize,
       IconData? iconFrom,
       IconData? iconTo,
@@ -28,8 +28,8 @@ class ButtonAnimateIconUi extends StatefulWidget {
       bool? enable,
       super.key})
       : this.onPressed = onPressed,
-        this.fromSec = fromSec,
-        this.toSec = toSec,
+        this.fromMilisec = fromMilisec,
+        this.toMilisec = toMilisec,
         _enable = enable {
     _inkDecoration = inkDecoration;
     _iconSize = iconSize;
@@ -46,15 +46,15 @@ class ButtonAnimateIconUi extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() {
-    return ButtonAnimateIconUiState(onPressed, fromSec, toSec, _iconSize,
-        _iconFrom, _iconTo, _toolTipText, _inkDecoration, _enable);
+    return ButtonAnimateIconUiState(onPressed, fromMilisec, toMilisec,
+        _iconSize, _iconFrom, _iconTo, _toolTipText, _inkDecoration, _enable);
   }
 }
 
 class ButtonAnimateIconUiState extends State<ButtonAnimateIconUi> {
   VoidCallback? _onPressed;
-  double? _from;
-  double? _to;
+  int? _fromMilisec;
+  int? _toMilisec;
   BoxDecoration? _inkDecoration;
   double? _iconSize = 32.0;
   IconData? _iconFrom = Icons.play_arrow;
@@ -64,8 +64,8 @@ class ButtonAnimateIconUiState extends State<ButtonAnimateIconUi> {
 
   ButtonAnimateIconUiState(
       VoidCallback? onPressed,
-      double? from,
-      double? to,
+      int? fromMilisec,
+      int? toMilisec,
       double? iconSize,
       IconData? iconFrom,
       IconData? iconTo,
@@ -74,8 +74,8 @@ class ButtonAnimateIconUiState extends State<ButtonAnimateIconUi> {
       bool? enable)
       : _onPressed = onPressed,
         _enable = enable {
-    _from = from;
-    _to = to;
+    _fromMilisec = fromMilisec;
+    _toMilisec = toMilisec;
     _inkDecoration = inkDecoration;
     _iconSize = iconSize;
     _iconFrom = iconFrom;
@@ -87,10 +87,6 @@ class ButtonAnimateIconUiState extends State<ButtonAnimateIconUi> {
 
   @override
   Widget build(BuildContext context) {
-    if (_toolTipText != null) {
-      print(
-          "ButtonAnimateIconUiState.build - $_toolTipText - enable - $_enable");
-    }
     //var btn = ElevatedButton(
     //child:  Icon(_playState == 1 ? _iconTo : _iconFrom),
     var btn = IconButton(
@@ -100,7 +96,7 @@ class ButtonAnimateIconUiState extends State<ButtonAnimateIconUi> {
           ? null
           : () async {
               _playState = 1;
-              setState(() {});
+              if (this.mounted == true) setState(() {});
               try {
                 _onPressed!.call();
               } catch (ex) {
@@ -109,7 +105,7 @@ class ButtonAnimateIconUiState extends State<ButtonAnimateIconUi> {
               }
               await Future.delayed(const Duration(milliseconds: 500));
               _playState = 0;
-              setState(() {});
+              if (this.mounted == true) setState(() {});
             },
     );
 
@@ -132,10 +128,10 @@ class ButtonAnimateIconUiState extends State<ButtonAnimateIconUi> {
 }
 
 class AudioSegmentItem {
-  AudioSegmentItem({double from = 0, double to = 0, String filepath = ""}) {
+  AudioSegmentItem({int from = 0, int to = 0, String filepath = ""}) {
     PathFile = filepath;
-    FromSec = from;
-    ToSec = to;
+    FromMilisec = from;
+    ToMilisec = to;
   }
 
   static AudioSegmentItem fromJson(Map<String, dynamic> val) {
@@ -148,12 +144,12 @@ class AudioSegmentItem {
   static Map<String, dynamic> toJson(AudioSegmentItem val) {
     return {
       "PathFile": val.PathFile,
-      "FromSec": val.FromSec,
-      "ToSec": val.ToSec
+      "FromSec": val.FromMilisec,
+      "ToSec": val.ToMilisec
     };
   }
 
   String PathFile = "";
-  double FromSec = 0.0;
-  double ToSec = 0.0;
+  int FromMilisec = 0;
+  int ToMilisec = 0;
 }

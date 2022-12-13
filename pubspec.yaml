@@ -48,6 +48,8 @@ dependencies:
   flutter_sound_record:
   #audio_recorder:
   flutter_media_metadata:
+  easy_folder_picker:
+  ffmpeg_kit_flutter:
 
 dev_dependencies:
   flutter_test:

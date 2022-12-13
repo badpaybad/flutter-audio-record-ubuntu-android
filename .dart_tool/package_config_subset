@@ -34,6 +34,10 @@ cupertino_icons
 2.12
 file:///home/dunp/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/cupertino_icons-1.0.5/
 file:///home/dunp/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/cupertino_icons-1.0.5/lib/
+easy_folder_picker
+2.17
+file:///home/dunp/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/easy_folder_picker-1.3.0/
+file:///home/dunp/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/easy_folder_picker-1.3.0/lib/
 eventify
 2.12
 file:///home/dunp/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/eventify-1.0.1/
@@ -312,6 +316,6 @@ file:///home/dunp/snap/flutter/common/flutter/packages/flutter_web_plugins/
 file:///home/dunp/snap/flutter/common/flutter/packages/flutter_web_plugins/lib/
 audio_cutter
 2.18
-file:///work/flutter-audio-record-ubuntu-android/
-file:///work/flutter-audio-record-ubuntu-android/lib/
+file:///work/flutter-audio-cutting/
+file:///work/flutter-audio-cutting/lib/
 2

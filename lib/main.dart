@@ -40,12 +40,12 @@ class MyAppUiState extends State<MyAppUi> {
 
       if (type == "File") {
         _canManipulateFile = true;
-        //setState(() {});
+        //if (this.mounted==true) setState(() {});
       }
       if (type == "State") {}
       if (type == "Reset") {
         _canManipulateFile = false;
-        //setState(() {});
+        //if (this.mounted==true) setState(() {});
       }
     });
   }
@@ -89,7 +89,6 @@ class MyAppUiState extends State<MyAppUi> {
                     //   onPressed: () async {},
                     //   child: Text('From file ...'),
                     // ),
-                    Text(' Mic: '),
                     MicrecorderUi(_messageBus, key: UniqueKey()),
                   ],
                 ),

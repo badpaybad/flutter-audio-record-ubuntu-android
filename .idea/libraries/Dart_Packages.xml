@@ -65,6 +65,13 @@
             </list>
           </value>
         </entry>
+        <entry key="easy_folder_picker">
+          <value>
+            <list>
+              <option value="$USER_HOME$/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/easy_folder_picker-1.3.0/lib" />
+            </list>
+          </value>
+        </entry>
         <entry key="eventify">
           <value>
             <list>
@@ -560,6 +567,7 @@
       <root url="file://$USER_HOME$/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/collection-1.16.0/lib" />
       <root url="file://$USER_HOME$/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/crypto-3.0.2/lib" />
       <root url="file://$USER_HOME$/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/cupertino_icons-1.0.5/lib" />
+      <root url="file://$USER_HOME$/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/easy_folder_picker-1.3.0/lib" />
       <root url="file://$USER_HOME$/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/eventify-1.0.1/lib" />
       <root url="file://$USER_HOME$/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/fake_async-1.3.1/lib" />
       <root url="file://$USER_HOME$/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/ffi-2.0.1/lib" />
